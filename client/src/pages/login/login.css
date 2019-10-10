@@ -1,0 +1,83 @@
+.sign-bg {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(70% 90% at 50% 10%, #63d2e6 30%, #057baa 100%);
+  background-size: cover;
+
+  position: relative;
+}
+
+.sign-bg input {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 24px;
+  padding-left: 5px;
+}
+.sign-bg input:focus {
+  border: 1px solid #3eafdb;
+  outline: none;
+}
+
+.sign-bg .sign-btn {
+  font-size: 16px;
+  margin-top: 10px;
+  background-color: #3eafdb;
+  border-radius: 6px;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ------------------------------------------登录窗口----------------------------------------- */
+.login-window {
+  width: 500px;
+  height: 300px;
+  text-align: center;
+  border-radius: 8px;
+  background: #fff;
+  padding: 20px 40px;
+
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%,-50%);
+}
+.login-window .service {
+  height: 30px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.login-window .service a {
+  color: #35a7d4;
+  text-decoration: none;
+}
+
+/* --------------------------------注册窗口---------------------------- */
+.register-window {
+  width: 500px;
+  height: 80vh;
+  text-align: center;
+  border-radius: 8px;
+  background: #fff;
+  padding: 20px 40px;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.register-window .sign-btn {
+  margin-top: 24px;
+}

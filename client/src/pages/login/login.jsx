@@ -1,9 +1,9 @@
 import React from 'react'
 import './login.css'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router , Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router , Route, Link, Switch, Redirect } from 'react-router-dom';
 
-import { register } from '../../request'
+import { login, register } from '../../request'
 import MD5 from 'js-md5'
 
 import TopModal from '../../components/topModal'
@@ -25,7 +25,6 @@ class Login extends React.Component {
 
   loginToBlog() {
     let { username, password } = this.state
-    console.log(username, password)
 
     let emptyName = username === ''
     let emptyPass = password === ''
@@ -45,33 +44,37 @@ class Login extends React.Component {
         emptyName,
         emptyPass
       })
-      let text = ''
-      if (!!emptyName && !emptyPass) {
-        text = '请输入用户名'
-      }else if (!emptyName && !!emptyPass) {
-        text = '请输入密码'
-      }else {
-        text = '请输入用户名和密码'
-      }
-      TopModal({
-        title: '抱歉',
-        text: text,
-        showCancel: false
-      })
+      // let text = ''
+      // if (!!emptyName && !emptyPass) {
+      //   text = '请输入用户名'
+      // }else if (!emptyName && !!emptyPass) {
+      //   text = '请输入密码'
+      // }else {
+      //   text = '请输入用户名和密码'
+      // }
+      // TopModal({
+      //   title: '抱歉',
+      //   text: text,
+      //   showCancel: false
+      // })
     }
   }
 
   changeUsername(target) {
     let username = target.value.trim()
+    let emptyName = false
     this.setState({
-      username
+      username,
+      emptyName
     })
   }
   changePassword(target) {
     let password = target.value.trim()
+    let emptyPass = false
     password = MD5(password + this.props.salt)
     this.setState({
-      password
+      password,
+      emptyPass
     })
   }
 
@@ -107,30 +110,35 @@ class Register extends React.Component {
   // 根据传入的type值判断是哪个输入框的值
   changeInput(value, type) {
     value = value.trim()
-    switch(type) {
-      case 'username':
+    switch(type*1) {
+      case 1:
         this.setState({
-          username: value
+          username: value,
+          emptyName: false
         })
         break;
-      case 'password':
+      case 2:
         this.setState({
-          password: MD5(value)
+          password: MD5(value),
+          emptyPass: false
         })
         break;
-      case 'confirmPassword':
+      case 3:
         this.setState({
-          confirmPassword: MD5(value)
+          confirmPassword: MD5(value),
+          emptyConfirm: false
         })
         break;
-      case 'email':
+      case 4:
         this.setState({
-          email: value
+          email: value,
+          emptyEmail: false
         })
         break;
-      case 'phone':
+      case 5:
         this.setState({
-          phone: value
+          phone: value,
+          emptyPhone: false
         })
         break;
       default: 
@@ -154,7 +162,7 @@ class Register extends React.Component {
 
     // 校验是否有空选项
     if (!emptyName && !emptyPass && !emptyConfirm && !emptyEmail && !emptyPhone) {
-      // login({
+      // register({
       //   username,
       //   password
       // })
@@ -175,13 +183,14 @@ class Register extends React.Component {
   }
 
   render() {
+    let { emptyName, emptyPass, emptyConfirm, emptyEmail, emptyPhone } = this.state
     return (
       <div className="register-window">
-        <input onInput={({target}) => this.changeInput(target.value, 'username')} placeholder="请输入用户名" type="text"/>
-        <input onInput={({target}) => this.changeInput(target.value, 'password')} placeholder="请输入密码" type="password"/>
-        <input onInput={({target}) => this.changeInput(target.value, 'confirmPassword')} placeholder="请确认密码" type="password"/>
-        <input onInput={({target}) => this.changeInput(target.value, 'email')} placeholder="请输入邮箱" type="text"/>
-        <input onInput={({target}) => this.changeInput(target.value, 'phone')} placeholder="请输入手机号" type="text"/>
+        <input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
+        <input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 2)} placeholder="请输入密码" type="password"/>
+        <input className={emptyConfirm ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 3)} placeholder="请确认密码" type="password"/>
+        <input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入邮箱" type="text"/>
+        <input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入手机号" type="text"/>
         <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
       </div>
     )
@@ -241,6 +250,7 @@ class LoginPage extends React.Component {
               <Link onClick={() => this.switchLogin(1)} className={isLogin ? 'active' : ''} to="/login">账号登录</Link>
               <Link onClick={() => this.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/register">快速注册</Link>
             </div>
+            <Redirect exact path="/" to="/login" />
             <Route path="/login" render={ () => (<Login {...this.state} />) } />
             <Route path="/register" render={ () => (<Register {...this.state} />) } />
             <Route path="/reset" render={ () => (<Reset {...this.state} />) } />

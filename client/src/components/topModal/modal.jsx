@@ -28,8 +28,8 @@ class Modal extends React.Component {
         <div className="title">{title}</div>
         <div className="text">{text}</div>
         <div className="top-modal-btn">
-          <button onClick={() => this.confirm()}>{confirmText}</button>
-          {showCancel ? <button onClick={() => this.cancel()}>{cancelText}</button> : ''}
+          <button onClick={() => this.props.confirm()}>{confirmText}</button>
+          {showCancel ? <button onClick={() => this.props.cancel()}>{cancelText}</button> : ''}
         </div>
       </div>
     )

@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 
 let initialState = {
   userId: '',
-  salt: '123!@#'
+  salt: '123!@#',
 }
 
 const mainReducer = (state = initialState, action) => {

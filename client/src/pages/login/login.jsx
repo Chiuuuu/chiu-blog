@@ -1,10 +1,12 @@
 import React from 'react'
 import './login.css'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router , Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router , Route, Link } from 'react-router-dom';
 
-import { login } from '../../request'
-import md5 from 'js-md5'
+import { register } from '../../request'
+import MD5 from 'js-md5'
+
+import TopModal from '../../components/topModal'
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,29 +16,49 @@ class Login extends React.Component {
       username: '',
       password: '',
       userId: '',
-      salt: ''
+      salt: '',
+      emptyName: false,
+      emptyPass: false,
     }
   
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    return {
-      userId: props.userId,
-      salt: props.salt
-    }
   }
 
   loginToBlog() {
     let { username, password } = this.state
     console.log(username, password)
-    // login({
-    //   username,
-    //   password
-    // })
-    //   .then(res => {
-    //     window.localStorage.setItem('user', res)
-    //   })
-    //   .catch(err => console.log(err))
+
+    let emptyName = username === ''
+    let emptyPass = password === ''
+
+    // 校验是否有空选项
+    if (!emptyName && !emptyPass) {
+      // login({
+      //   username,
+      //   password
+      // })
+      //   .then(res => {
+      //     window.localStorage.setItem('user', res)
+      //   })
+      //   .catch(err => console.log(err))
+    }else {
+      this.setState({
+        emptyName,
+        emptyPass
+      })
+      let text = ''
+      if (!!emptyName && !emptyPass) {
+        text = '请输入用户名'
+      }else if (!emptyName && !!emptyPass) {
+        text = '请输入密码'
+      }else {
+        text = '请输入用户名和密码'
+      }
+      TopModal({
+        title: '抱歉',
+        text: text,
+        showCancel: false
+      })
+    }
   }
 
   changeUsername(target) {
@@ -47,38 +69,26 @@ class Login extends React.Component {
   }
   changePassword(target) {
     let password = target.value.trim()
-    password = md5(password + this.state.salt)
+    password = MD5(password + this.props.salt)
     this.setState({
       password
     })
   }
 
   render() {
+    let { emptyName, emptyPass } = this.state
     return (
-      <div className="sign-bg">
-        <div className="login-window">
-          <h3>欢迎登陆</h3>
-          <input onInput={({target}) => this.changeUsername(target)} placeholder="请输入用户名" type="text"/>
-          <input onInput={({target}) => this.changePassword(target)} placeholder="请输入密码" type="password"/>
-          <div className="service">
-            <Link to="/register">点击注册</Link>
-            <Link to="/reset">忘记密码?</Link>
-          </div>
-          <button className="sign-btn" onClick={() => this.loginToBlog()}>登录</button>
+      <div className="login-window">
+        <input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeUsername(target)} placeholder="请输入用户名" type="text"/>
+        <input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changePassword(target)} placeholder="请输入密码" type="password"/>
+        <div className="service">
+          <Link to="/reset">忘记密码?</Link>
         </div>
+        <button className="sign-btn" onClick={() => this.loginToBlog()}>登录</button>
       </div>
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    userId: state.userId,
-    salt: state.salt
-  }
-}
-
-Login = connect(mapStateToProps)(Login)
 
 class Register extends React.Component {
   constructor(props) {
@@ -105,12 +115,12 @@ class Register extends React.Component {
         break;
       case 'password':
         this.setState({
-          password: value
+          password: MD5(value)
         })
         break;
       case 'confirmPassword':
         this.setState({
-          confirmPassword: value
+          confirmPassword: MD5(value)
         })
         break;
       case 'email':
@@ -128,18 +138,51 @@ class Register extends React.Component {
     }
   }
 
+  // 点击注册
+  registerBlog() {
+    let { username, password, confirmPassword, email, phone } = this.state
+
+    if (password !== confirmPassword) {
+
+    }
+
+    let emptyName = username === ''
+    let emptyPass = password === ''
+    let emptyConfirm = confirmPassword === ''
+    let emptyEmail = email === ''
+    let emptyPhone = phone === ''
+
+    // 校验是否有空选项
+    if (!emptyName && !emptyPass && !emptyConfirm && !emptyEmail && !emptyPhone) {
+      // login({
+      //   username,
+      //   password
+      // })
+      //   .then(res => {
+      //     window.localStorage.setItem('user', res)
+      //   })
+      //   .catch(err => console.log(err))
+
+    }else {
+      this.setState({
+        emptyName,
+        emptyPass,
+        emptyConfirm,
+        emptyEmail,
+        emptyPhone
+      })
+    }
+  }
+
   render() {
     return (
-      <div className="sign-bg">
-        <div className="register-window">
-          <h3>欢迎注册</h3>
-          <input onInput={({target}) => this.changeInput(target.value, 'username')} placeholder="请输入用户名" type="text"/>
-          <input onInput={({target}) => this.changeInput(target.value, 'password')} placeholder="请输入密码" type="password"/>
-          <input onInput={({target}) => this.changeInput(target.value, 'confirmPassword')} placeholder="请确认密码" type="password"/>
-          <input onInput={({target}) => this.changeInput(target.value, 'email')} placeholder="请输入邮箱" type="text"/>
-          <input onInput={({target}) => this.changeInput(target.value, 'phone')} placeholder="请输入手机号" type="text"/>
-          <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
-        </div>
+      <div className="register-window">
+        <input onInput={({target}) => this.changeInput(target.value, 'username')} placeholder="请输入用户名" type="text"/>
+        <input onInput={({target}) => this.changeInput(target.value, 'password')} placeholder="请输入密码" type="password"/>
+        <input onInput={({target}) => this.changeInput(target.value, 'confirmPassword')} placeholder="请确认密码" type="password"/>
+        <input onInput={({target}) => this.changeInput(target.value, 'email')} placeholder="请输入邮箱" type="text"/>
+        <input onInput={({target}) => this.changeInput(target.value, 'phone')} placeholder="请输入手机号" type="text"/>
+        <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
       </div>
     )
   }
@@ -164,22 +207,57 @@ class Reset extends React.Component {
 }
 
 class LoginPage extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
-
+      userId: '',
+      salt: '',
+      isLogin: true
     }
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return {
+      userId: props.userId,
+      salt: props.salt
+    }
+  }
+
+  switchLogin(state) {
+    this.setState({
+      isLogin: !!state
+    })
+  }
+
   render() {
+    let isLogin = this.state.isLogin
+
     return (
-      <Router>
-        <Route exact path="/" component={ Login } />
-        <Route path="/register" component={ Register } />
-        <Route path="/reset" component={ Reset } />
-      </Router>
+      <div className="sign-bg">
+        <Router>
+          <div className="sign-window">
+            <div className="sign-switch">
+              <Link onClick={() => this.switchLogin(1)} className={isLogin ? 'active' : ''} to="/login">账号登录</Link>
+              <Link onClick={() => this.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/register">快速注册</Link>
+            </div>
+            <Route path="/login" render={ () => (<Login {...this.state} />) } />
+            <Route path="/register" render={ () => (<Register {...this.state} />) } />
+            <Route path="/reset" render={ () => (<Reset {...this.state} />) } />
+          </div>
+        </Router>
+      </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userId: state.userId,
+    salt: state.salt
+  }
+}
+
+LoginPage = connect(mapStateToProps)(LoginPage)
 
 export default LoginPage

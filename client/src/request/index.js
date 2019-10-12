@@ -1,7 +1,8 @@
 const axios = require('axios')
+const Qs = require('qs')
 
 const mainPage = axios.create({
-  baseURL: '/',
+  baseURL: 'http://172.16.23.92:8888',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -21,17 +22,17 @@ function formatGetUrl(url, data) {
 
 // 用户注册
 function register(data) {
-  return mainPage.post('/register', data)
+  return mainPage.post('/register', Qs.stringify(data))
 }
 
 // 用户登录
 function login(data) {
-  return mainPage.post('/login', data)
+  return mainPage.post('/login', Qs.stringify(data))
 }
 
 // 获取用户信息
 function getUserInfo(data) {
-  return mainPage.get(formatGetUrl('/getUserInfo', data))
+  return mainPage.get(formatGetUrl('/getUserInfo', Qs.stringify(data)))
 }
 
 export {

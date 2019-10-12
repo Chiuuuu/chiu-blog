@@ -6,7 +6,19 @@ const path = require('path');
 
 // 创建一个Koa对象表示web app本身:
 const app = new Koa();
+// 跨域处理
+const cors = require('koa2-cors');
 
+app.use(cors({
+    origin: function (ctx) {
+      return '*';
+    },
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 app.use(KoaBodyParser());
 app.use(KoaStatic(path.join(__dirname, '/client/public/index.html')));
 
@@ -23,4 +35,4 @@ app.use(router.allowedMethods());
 
 // 在端口8888监听:
 app.listen(8888);
-console.log('app started at port 3000...');
+console.log('app started at port 8888...');

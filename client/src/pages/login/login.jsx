@@ -23,6 +23,12 @@ class Login extends React.Component {
   
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...props
+    }
+  }
+
   loginToBlog() {
     let { username, password } = this.state
 
@@ -31,14 +37,14 @@ class Login extends React.Component {
 
     // 校验是否有空选项
     if (!emptyName && !emptyPass) {
-      // login({
-      //   username,
-      //   password
-      // })
-      //   .then(res => {
-      //     window.localStorage.setItem('user', res)
-      //   })
-      //   .catch(err => console.log(err))
+      login({
+        username,
+        password
+      })
+        .then(res => {
+          window.localStorage.setItem('user', JSON.stringify(res))
+        })
+        .catch(err => console.log(err))
     }else {
       this.setState({
         emptyName,
@@ -107,9 +113,16 @@ class Register extends React.Component {
   
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...props
+    }
+  }
+
   // 根据传入的type值判断是哪个输入框的值
   changeInput(value, type) {
     value = value.trim()
+    let salt = this.state.salt
     switch(type*1) {
       case 1:
         this.setState({
@@ -119,13 +132,13 @@ class Register extends React.Component {
         break;
       case 2:
         this.setState({
-          password: MD5(value),
+          password: MD5(value + salt),
           emptyPass: false
         })
         break;
       case 3:
         this.setState({
-          confirmPassword: MD5(value),
+          confirmPassword: MD5(value + salt),
           emptyConfirm: false
         })
         break;
@@ -149,9 +162,12 @@ class Register extends React.Component {
   // 点击注册
   registerBlog() {
     let { username, password, confirmPassword, email, phone } = this.state
+    console.log(username, password, confirmPassword, email, phone)
 
     if (password !== confirmPassword) {
-
+      return TopModal({
+        text: '两次输入的密码不一致！'
+      })
     }
 
     let emptyName = username === ''
@@ -162,14 +178,11 @@ class Register extends React.Component {
 
     // 校验是否有空选项
     if (!emptyName && !emptyPass && !emptyConfirm && !emptyEmail && !emptyPhone) {
-      // register({
-      //   username,
-      //   password
-      // })
-      //   .then(res => {
-      //     window.localStorage.setItem('user', res)
-      //   })
-      //   .catch(err => console.log(err))
+      register({ username, password, email, phone })
+        .then(res => {
+          window.localStorage.setItem('user', res)
+        })
+        .catch(err => console.log(err))
 
     }else {
       this.setState({

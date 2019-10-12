@@ -10,17 +10,17 @@ class Sidebar extends React.Component {
     this.state = {
       avatar: ''
     }
-
-    static getDerivedStateFromProps(props, state) {
-      request.getUserInfo({
-        userId: 
-      })
-        .then(res => {
-
-        })
-        .catch(err => console.log(err))
-    }
   
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    getUserInfo({
+      userId: ''
+    })
+      .then(res => {
+
+      })
+      .catch(err => console.log(err))
   }
 
   render() {

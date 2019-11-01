@@ -10,16 +10,29 @@
 }
 
 .top-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+
   background-color: #fff;
   text-align: center;
   width: 400px;
   height: 240px;
   border-radius: 8px;
 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  animation: showModal 0.2s ease-in;
+}
+@keyframes showModal {
+  0% {
+    transform: translate(-50%,-50%) scale(0.8);
+  }
+  80% {
+    transform: translate(-50%,-50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%,-50%) scale(1);
+  }
 }
 
 .top-modal .title {
@@ -45,7 +58,7 @@
   line-height: 30px;
   padding: 0 20px;
   margin: 0 20px;
-  background-color: #3eafdb;
+  background-color: #40a9ff;
   border: none;
   border-radius: 4px;
   outline: none;

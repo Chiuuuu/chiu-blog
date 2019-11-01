@@ -27,27 +27,24 @@ router.post('/login', async(ctx, next) => {
   let user = null 
   try {
     user = await User.find({'username': username})
+    ctx.response.type = 'application/json';
     if (user.length > 0) {
-      console.log(user, password)
-      if (user.password == password) {
-        ctx.response.type = 'application/json';
+      if (user[0].password == password) {
         ctx.response.body = {
           code: 1,
           msg: 'success'
         };
       }else {
-        ctx.response.type = 'application/json';
         ctx.response.body = {
           code: 2,
           msg: '密码错误'
         };
       }
     }else {
-      ctx.response.type = 'application/json';
-        ctx.response.body = {
-          code: 0,
-          msg: '请先注册账户'
-        };
+      ctx.response.body = {
+        code: 0,
+        msg: '请先注册账户'
+      };
     }
   } catch (error) {
     console.log(error)
@@ -60,13 +57,13 @@ router.post('/login', async(ctx, next) => {
 router.post('/register', async(ctx, next) => {
   let body = ctx.request.body
   let { username, password, email, phone } = body
+  ctx.response.type = 'application/json'
 
   // 搜索数据库是否已经有该用户名
   let users = null
   try {
     users = await User.find({'username': username})
     if (users.length > 1 || (users[0] && users[0].username == username)) {
-      ctx.response.type = 'application/json'
       ctx.response.body = { code: 0, msg: '该用户名已被注册！' }
       return
     }
@@ -85,8 +82,29 @@ router.post('/register', async(ctx, next) => {
     ctx.response.status = 500
     return next()
   }
-  ctx.response.type = 'application/json'
   ctx.response.body = { code: 1, msg: 'success', data: doc }
+})
+
+// 重置密码接口
+router.post('/reset', async(ctx, next) => {
+  let body = ctx.request.body
+  let { username, password, email, phone } = body
+  ctx.response.type = 'application/json'
+
+  // 搜索数据库是否已经有该用户名
+  let users = null
+  try {
+    users = await User.findOneAndUpdate({ username, email, phone }, { password })
+    if (!!users) {
+      ctx.response.body = { code: 1, msg: 'success', data: users }
+    }else {
+      ctx.response.body = { code: 0, msg: '手机及邮箱验证失败', data: {} }
+    }
+  } catch (error) {
+    console.log(error)
+    ctx.response.status = 500
+    return next()
+  }
 })
 
 module.exports = router

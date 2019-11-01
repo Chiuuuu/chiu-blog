@@ -8,6 +8,18 @@ const mainPage = axios.create({
   }
 })
 
+mainPage.interceptors.response.use(config => {
+  // 在发送请求之前做些什么
+  if (config.status === 200) {
+    return config.data
+  }else {
+    return config
+  }
+}, err => {
+  // 对请求错误做些什么
+  return Promise.reject(err);
+});
+
 // 封装get方法url
 function formatGetUrl(url, data) {
   url = url + '?'
@@ -25,6 +37,11 @@ function register(data) {
   return mainPage.post('/register', Qs.stringify(data))
 }
 
+// 用户重置密码
+function reset(data) {
+  return mainPage.post('/reset', Qs.stringify(data))
+}
+
 // 用户登录
 function login(data) {
   return mainPage.post('/login', Qs.stringify(data))
@@ -38,5 +55,6 @@ function getUserInfo(data) {
 export {
   register,
   login,
+  reset,
   getUserInfo,
 }

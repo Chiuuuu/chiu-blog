@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Modal from './modal'
+import Modal from './Modal'
 
 function TopModal(option) {
 

@@ -1,15 +1,14 @@
 import React from 'react';
 import './App.css'
 
-import LoginPage from './pages/login/login'
+import { BrowserRouter as Router , Route, Link, Switch, Redirect } from 'react-router-dom';
 
-let user = JSON.parse(window.localStorage.getItem('user'))
-let username, password
-if (!!user) {
-  username = user.username
-  password = user.password
-}
+import LoginPage from './pages/login/Login'
+import MainPage from './pages/main/Main'
 
+const globalContext = React.createContext({
+  color: "green"
+})
 class App extends React.Component {
 
   constructor(props) {
@@ -22,7 +21,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <LoginPage />
+        <Router>
+          <Switch>
+            <Redirect exact path="/" to="/sign" />
+            <Route path="/sign" component={LoginPage} />
+            <Route path="/main" component={MainPage} />
+          </Switch>
+        </Router>
       </div>
     );
   }

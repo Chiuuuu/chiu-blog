@@ -1,0 +1,16 @@
+.side-info-user {
+  margin-top: 60px;
+}
+
+.side-info-avatar {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.side-info-name {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}

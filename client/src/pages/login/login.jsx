@@ -13,7 +13,7 @@ import { fn } from 'moment';
 
 class Login extends React.Component {
 
-  static defaultProps = {
+  static propTypes = {
     hideTab: PropTypes.func,
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,

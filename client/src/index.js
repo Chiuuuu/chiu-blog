@@ -7,6 +7,10 @@ import { Provider } from 'react-redux'
 
 import store from './reducers'
 
+document.body.addEventListener('scroll', function(e) {
+  console.log(e)
+})
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

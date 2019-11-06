@@ -3,6 +3,7 @@ import './App.css'
 
 import { BrowserRouter as Router , Route, Link, Switch, Redirect } from 'react-router-dom';
 
+import ToTop from './components/toTop/ToTop'
 import LoginPage from './pages/login/Login'
 import MainPage from './pages/main/Main'
 
@@ -28,6 +29,7 @@ class App extends React.Component {
             <Route path="/main" component={MainPage} />
           </Switch>
         </Router>
+        <ToTop />
       </div>
     );
   }

@@ -1,0 +1,16 @@
+#toTop {
+  position: fixed;
+  right: 370px;
+  bottom: 36px;
+  z-index: 99;
+
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: #40a9ff;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(64, 169, 255, 0.5);
+  cursor: pointer;
+}

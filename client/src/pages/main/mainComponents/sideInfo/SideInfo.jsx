@@ -1,9 +1,8 @@
 import React from 'react'
 import './SideInfo.css'
 
-import { Avatar } from 'antd';
-
 import SideInfoUser from './sideInfoUser/SideInfoUser'
+import SideInfoArticle from './sideInfoArticle/SideInfoArticle'
 
 class SideInfo extends React.Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class SideInfo extends React.Component {
     return (
       <div className="side-info-box">
         <SideInfoUser />
-
+        <SideInfoArticle />
       </div>
     )
   }

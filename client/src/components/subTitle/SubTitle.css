@@ -1,0 +1,16 @@
+.sub-title {
+  position: relative;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.sub-title::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: 76px;
+  width: calc(100% - 76px);
+  height: 1px;
+  background-color: #e5e6e7;
+}

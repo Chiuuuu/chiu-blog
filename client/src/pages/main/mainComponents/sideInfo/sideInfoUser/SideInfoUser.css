@@ -14,3 +14,17 @@
   font-weight: 700;
   text-align: center;
 }
+
+.side-info-data {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0 30px;
+
+  font-size: 16px;
+  margin-top: 30px;
+}
+
+.side-info-record {
+  margin-left: 12px;
+}

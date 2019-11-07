@@ -2,14 +2,12 @@ import React from 'react'
 import './Login.css'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { BrowserRouter as Router , Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 import { Input, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 
 import { login, register, reset } from '../../request'
 import MD5 from 'js-md5'
-import { fn } from 'moment';
-
 
 class Login extends React.Component {
 
@@ -65,6 +63,7 @@ class Login extends React.Component {
           }else if (res.code == 1) {    // 成功登陆, 储存用户信息
             message.success('欢迎')
             window.localStorage.setItem('user', JSON.stringify({ username, password }))
+            this.props.changeVisite(0)
             this.props.history.push('/main')
           }else if (res.code == 2) {   // 密码错误
             const modal = Modal.warning()
@@ -110,6 +109,7 @@ class Login extends React.Component {
         <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeUsername(target)} placeholder="请输入用户名" type="text"/>
         <Input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changePassword(target)} placeholder="请输入密码" type="password"/>
         <div className="service">
+          <Link to="/main" onClick={() => this.props.changeVisite(1)}>游客进入</Link>
           <Link to="/sign/reset" onClick={this.state.hideTab}>忘记密码?</Link>
         </div>
         <button className="sign-btn" onClick={() => this.loginToBlog()}>登录</button>
@@ -119,6 +119,25 @@ class Login extends React.Component {
 }
 
 Login = withRouter(Login)
+
+const mapLoginStateToProps = (state) => {
+  return {
+    isVisitor: state.isVisitor
+  }
+}
+
+const mapLoginDispatchToProps = (dispatch) => {
+  return {
+    changeVisite(type) {
+      dispatch({
+        type: 'visitorIn',
+        payload: type
+      })
+    }
+  }
+}
+
+Login = connect(mapLoginStateToProps, mapLoginDispatchToProps)(Login)
 
 class Register extends React.Component {
   constructor(props) {
@@ -407,20 +426,20 @@ class LoginPage extends React.Component {
 
     return (
       <div className="sign-bg">
-          <div className="sign-window">
-            {
-              this.state.showTab 
-              ? <div className="sign-switch">
-                  <Link onClick={() => this.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
-                  <Link onClick={() => this.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
-                </div>
-              : null
-            }
-            <Redirect exact path="/sign" to="/sign/login" />
-            <Route path="/sign/login" render={ () => (<Login hideTab={this.hideTab} {...this.state} />) } />
-            <Route path="/sign/register" render={ () => (<Register {...this.state} />) } />
-            <Route path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />
-          </div>
+        <div className="sign-window">
+          {
+            this.state.showTab 
+            ? <div className="sign-switch">
+                <Link onClick={() => this.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
+                <Link onClick={() => this.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
+              </div>
+            : null
+          }
+          <Redirect exact path="/sign" to="/sign/login" />
+          <Route exact path="/sign/login" render={ () => (<Login hideTab={this.hideTab} {...this.state} />) } />
+          <Route exact path="/sign/register" render={ () => (<Register {...this.state} />) } />
+          <Route exact path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />
+        </div>
       </div>
     )
   }

@@ -1,16 +1,15 @@
 import React from 'react'
 import './Main.css'
 
-import MainContext from './mainContext'
-import TopNav from './mainComponents/topNav/TopNav'
+import ToTop from '../../components/toTop/ToTop'
+import TopNav from '../../components/topNav/TopNav'
 import SideInfo from './mainComponents/sideInfo/SideInfo'
 import MainContent from './mainComponents/mainContent/MainContent'
 import Directory from './mainComponents/directory/Directory'
-import { fn } from 'moment'
 
-function showToTop(e) {
-  console.log(e)
-}
+import MainContext from './mainContext'
+import { throttle } from '../../tools'
+
 class MainPage extends React.Component {
   constructor(props) {
     super(props)
@@ -80,26 +79,31 @@ class MainPage extends React.Component {
           like: 1,
           createTime: 1572921746239
         }
-      ]
+      ],
+      showToTop: false
     }
   
   }
 
+  showToTop = (e) => {
+    const scrollTop = document.documentElement.scrollTop
+    this.setState({ showToTop: scrollTop > 500 })
+  }
+
   static getDerivedStateFromProps(props, state) {
-    // ItemListContext = React.createContext({
-    //   ...state
-    // })
     return state
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', showToTop)
+    window.removeEventListener('scroll', throttle(this.showToTop, 200))
+    window.addEventListener('scroll', throttle(this.showToTop, 200))
   }
 
   render() {
     return (
       <div className="main-page-box">
-        <TopNav />
+        <TopNav showSearch={true} />
+        {this.state.showToTop ? <ToTop /> : null}
         <div className="main-page-body">
           <MainContext.Provider value={this.state.contentItems}>
             <SideInfo />

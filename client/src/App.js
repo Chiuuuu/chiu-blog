@@ -22,7 +22,7 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Switch>
-            <Redirect exact path="/" to="/sign" />
+            <Redirect exact path="/" to="/main" />
             <Route path="/sign" component={LoginPage} />
             <Route path="/main" component={MainPage} />
             <Route path="/add" component={AddPage} />

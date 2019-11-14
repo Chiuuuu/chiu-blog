@@ -64,6 +64,7 @@ class Login extends React.Component {
             message.success('欢迎')
             window.localStorage.setItem('user', JSON.stringify({ username, password }))
             this.props.changeVisite(0)
+            this.props.getUserInfo(res.data.userInfo)
             this.props.history.push('/main')
           }else if (res.code == 2) {   // 密码错误
             const modal = Modal.warning()
@@ -133,6 +134,12 @@ const mapLoginDispatchToProps = (dispatch) => {
         type: 'visitorIn',
         payload: type
       })
+    },
+    getUserInfo(data) {
+      dispatch({
+        type: 'getUserInfo',
+        payload: data
+      })
     }
   }
 }
@@ -147,11 +154,18 @@ class Register extends React.Component {
       username: '',
       password: '',
       confirmPassword: '',
+      nickname: '',
       email: '',
       phone: '',
     }
   
   }
+
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  };
 
   static getDerivedStateFromProps(props, state) {
     return {
@@ -184,11 +198,17 @@ class Register extends React.Component {
         break;
       case 4:
         this.setState({
+          nickname: value,
+          emptyNickname: false
+        })
+        break;
+      case 5:
+        this.setState({
           email: value,
           emptyEmail: false
         })
         break;
-      case 5:
+      case 6:
         this.setState({
           phone: value,
           emptyPhone: false
@@ -201,33 +221,51 @@ class Register extends React.Component {
 
   // 点击注册
   registerBlog() {
-    let { username, password, confirmPassword, email, phone } = this.state
+    let { username, password, confirmPassword, nickname, email, phone } = this.state
 
     if (password !== confirmPassword) {
-      return Modal({
-        text: '两次输入的密码不一致！'
+      const modal = Modal.warning()
+      return modal.update({
+        content: '两次密码不一致！',
+        onOk() {
+          modal.destroy()
+        }
       })
     }
 
     let emptyName = username === ''
     let emptyPass = password === ''
     let emptyConfirm = confirmPassword === ''
+    let emptyNickname = nickname === ''
     let emptyEmail = email === ''
     let emptyPhone = phone === ''
 
     // 校验是否有空选项
-    if (!emptyName && !emptyPass && !emptyConfirm && !emptyEmail && !emptyPhone) {
-      register({ username, password, email, phone })
+    if (!emptyName && !emptyPass && !emptyConfirm && !emptyNickname && !emptyEmail && !emptyPhone) {
+      register({ username, password, nickname, email, phone })
         .then(res => {
-          window.localStorage.setItem('user', res)
+          if (res.code == 1) {
+            window.localStorage.setItem('user', res)
+            this.props.switchLogin(1)
+            this.props.history.push('/sign/login')
+            message.success('注册成功！')
+          }else {
+            const modal = Modal.warning()
+            modal.update({
+              content: res.msg,
+              onOk() {
+                modal.destroy()
+              }
+            }) 
+          }
         })
         .catch(err => console.log(err))
-
     }else {
       this.setState({
         emptyName,
         emptyPass,
         emptyConfirm,
+        emptyNickname,
         emptyEmail,
         emptyPhone
       })
@@ -235,19 +273,22 @@ class Register extends React.Component {
   }
 
   render() {
-    let { emptyName, emptyPass, emptyConfirm, emptyEmail, emptyPhone } = this.state
+    let { emptyName, emptyPass, emptyConfirm, emptyNickname, emptyEmail, emptyPhone } = this.state
     return (
       <div className="register-window">
         <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
         <Input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 2)} placeholder="请输入密码" type="password"/>
         <Input className={emptyConfirm ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 3)} placeholder="请确认密码" type="password"/>
-        <Input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入邮箱" type="text"/>
-        <Input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入手机号" type="text"/>
+        <Input className={emptyNickname ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请确认昵称" type="text"/>
+        <Input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入邮箱" type="text"/>
+        <Input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 6)} placeholder="请输入手机号" type="text"/>
         <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
       </div>
     )
   }
 }
+Register = withRouter(Register)
+
 class Reset extends React.Component {
 
   constructor(props) {
@@ -391,7 +432,13 @@ class LoginPage extends React.Component {
       userId: '',
       salt: '',
       isLogin: true,
-      showTab: true
+      showTab: true,
+      switchLogin: (state) => {
+        this.setState({
+          isLogin: !!state,
+          showTab: true
+        })
+      }
     }
   }
 
@@ -414,13 +461,6 @@ class LoginPage extends React.Component {
     })
   }
 
-  switchLogin(state) {
-    this.setState({
-      isLogin: !!state,
-      showTab: true
-    })
-  }
-
   render() {
     let isLogin = this.state.isLogin
 
@@ -430,8 +470,8 @@ class LoginPage extends React.Component {
           {
             this.state.showTab 
             ? <div className="sign-switch">
-                <Link onClick={() => this.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
-                <Link onClick={() => this.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
+                <Link onClick={() => this.state.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
+                <Link onClick={() => this.state.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
               </div>
             : null
           }
@@ -440,6 +480,7 @@ class LoginPage extends React.Component {
           <Route exact path="/sign/register" render={ () => (<Register {...this.state} />) } />
           <Route exact path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />
         </div>
+        <div className="plice">京ICP备19108748号-1</div>
       </div>
     )
   }

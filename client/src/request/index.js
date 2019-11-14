@@ -2,7 +2,7 @@ const axios = require('axios')
 const Qs = require('qs')
 
 const mainPage = axios.create({
-  baseURL: 'http://172.16.23.92:8888',
+  baseURL: 'http://localhost:7458',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }

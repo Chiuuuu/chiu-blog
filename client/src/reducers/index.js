@@ -3,7 +3,10 @@ import { createStore } from 'redux'
 let initialState = {
   userId: '',
   salt: '123!@#',
-  isVisitor: sessionStorage.getItem('isVisitor') ? sessionStorage.getItem('isVisitor') : 0
+  isVisitor: sessionStorage.getItem('isVisitor') ? sessionStorage.getItem('isVisitor') : 0,
+  userInfo: {
+    nickname: 'hhh'
+  }
 }
 
 const mainReducer = (state = initialState, action) => {
@@ -12,6 +15,11 @@ const mainReducer = (state = initialState, action) => {
       return {
         ...state,
         userId: action.payload
+      }
+    case 'getUserInfo':
+      return {
+        ...state,
+        userInfo: action.payload
       }
     case 'visitorIn':
       sessionStorage.setItem('isVisitor', action.payload)

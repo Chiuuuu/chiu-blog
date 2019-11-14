@@ -35,6 +35,7 @@ class Directory extends React.Component {
               onClick={() => this.scrollToAnchor(item.id)}>{item.title}</a>
           })}
         </MainContext.Consumer>
+        <div className="plice">京ICP备19108748号-1</div>
       </div>
     )
   }

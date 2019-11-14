@@ -3,20 +3,21 @@ mongoose.connect('mongodb://localhost:27017/data')
 const db = mongoose.connection
 db.on('error', console.error.bind(console, '连接数据库失败'));
 
-let Schema, User
+let Schema, User, Article
 db.on('open', function() {
   Schema = new mongoose.Schema({
     username: String, 
     password: String,
+    nickname: String,
     email: String,
     phone: String,
   });
   User = mongoose.model('users', Schema);
+  Article = mongoose.model('articles', Schema);
 })
 
 const Router = require('koa-router');
 const router = new Router();
-
 
 // 登录接口
 router.post('/login', async(ctx, next) => {
@@ -32,7 +33,12 @@ router.post('/login', async(ctx, next) => {
       if (user[0].password == password) {
         ctx.response.body = {
           code: 1,
-          msg: 'success'
+          msg: 'success',
+          data: {
+            userInfo: {
+              nickname: user[0].nickname
+            }
+          }
         };
       }else {
         ctx.response.body = {
@@ -56,15 +62,20 @@ router.post('/login', async(ctx, next) => {
 // 注册接口
 router.post('/register', async(ctx, next) => {
   let body = ctx.request.body
-  let { username, password, email, phone } = body
+  let { username, password, nickname, email, phone } = body
   ctx.response.type = 'application/json'
 
   // 搜索数据库是否已经有该用户名
   let users = null
   try {
     users = await User.find({'username': username})
+    users = await User.find({'nickname': nickname})
     if (users.length > 1 || (users[0] && users[0].username == username)) {
       ctx.response.body = { code: 0, msg: '该用户名已被注册！' }
+      return
+    }
+    if (users.length > 1 || (users[0] && users[0].nickname == nickname)) {
+      ctx.response.body = { code: 0, msg: '该昵称已存在！' }
       return
     }
   } catch (error) {
@@ -76,7 +87,7 @@ router.post('/register', async(ctx, next) => {
   // 注册新用户
   let doc = null
   try {
-    doc = await User.create({ username, password, email, phone })
+    doc = await User.create({ username, password, nickname, email, phone })
   } catch (error) {
     console.log(error)
     ctx.response.status = 500

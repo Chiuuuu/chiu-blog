@@ -35,7 +35,7 @@ class TopNav extends React.Component {
   }
 
   switchNav(path) {
-    if (path === '/') {
+    if (path === '/sign') {
       this.props.history.replace(path)
     }else {
       this.props.history.push(path)
@@ -46,7 +46,7 @@ class TopNav extends React.Component {
     return (
       <div className="top-nav-box">
         <div className="top-nav-left">
-          chiu的博客
+          {!!+this.props.isVisitor ? '欢迎参观' : this.props.userInfo.nickname + '的博客'}
         </div>
         <div className="top-nav-center">
           { !!this.state.showSearch ? <Search className="top-nav-search" placeholder="搜索文章" size="default" onSearch={value => console.log(value)} /> : null }
@@ -55,7 +55,7 @@ class TopNav extends React.Component {
           { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/main')}><Icon type="home" />首页</Button> }
           { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/add')}><Icon type="edit" />新建</Button> }
           { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/user')}><Icon type="user" />个人</Button> }
-          <Button type="link" onClick={() =>this.switchNav('/')}><Icon type="logout" />退出</Button>
+          <Button type="link" onClick={() =>this.switchNav('/sign')}><Icon type="logout" />退出</Button>
         </div>
       </div>
     )
@@ -66,7 +66,8 @@ TopNav = withRouter(TopNav)
 
 const mapStateToProps = (state) => {
   return {
-    isVisitor: state.isVisitor
+    isVisitor: state.isVisitor,
+    userInfo: state.userInfo
   }
 }
 

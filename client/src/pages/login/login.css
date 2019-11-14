@@ -1,10 +1,24 @@
 .sign-bg {
+  position: relative;
+
   width: 100%;
   height: 100%;
   background: radial-gradient(70% 90% at 50% 10%, #63d2e6 30%, #057baa 100%);
   background-size: cover;
+  padding-bottom: 30px;
+}
 
-  position: relative;
+.sign-bg .plice {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #666;
+  color: #eee;
 }
 
 .sign-window {
@@ -118,7 +132,7 @@
 
 /* --------------------------------注册窗口---------------------------- */
 .register-window {
-  height: 390px;
+  height: 430px;
 }
 
 .register-window .sign-btn {

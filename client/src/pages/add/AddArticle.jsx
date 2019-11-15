@@ -17,6 +17,12 @@ class AddPage extends React.Component {
     return (
       <div className="add-article-box">
         <TopNav />
+        <div className="add-article-left">
+          <textarea className="add-article-textarea" ></textarea>
+        </div>
+        <div className="add-article-right">
+          <textarea className="add-article-textarea" readOnly></textarea>
+        </div>
       </div>
     )
   }

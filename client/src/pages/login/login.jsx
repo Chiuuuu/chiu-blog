@@ -63,8 +63,8 @@ class Login extends React.Component {
           }else if (res.code == 1) {    // 成功登陆, 储存用户信息
             message.success('欢迎')
             window.localStorage.setItem('user', JSON.stringify({ username, password }))
-            this.props.changeVisite(0)
-            this.props.getUserInfo(res.data.userInfo)
+            this.props.changeLoginState(1)
+            this.props.getUserInfo(JSON.stringify(res.data.userInfo))
             this.props.history.push('/main')
           }else if (res.code == 2) {   // 密码错误
             const modal = Modal.warning()
@@ -110,7 +110,7 @@ class Login extends React.Component {
         <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeUsername(target)} placeholder="请输入用户名" type="text"/>
         <Input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changePassword(target)} placeholder="请输入密码" type="password"/>
         <div className="service">
-          <Link to="/main" onClick={() => this.props.changeVisite(1)}>游客进入</Link>
+          <Link to="/main" onClick={() => this.props.changeLoginState(0)}>游客进入</Link>
           <Link to="/sign/reset" onClick={this.state.hideTab}>忘记密码?</Link>
         </div>
         <button className="sign-btn" onClick={() => this.loginToBlog()}>登录</button>
@@ -123,15 +123,15 @@ Login = withRouter(Login)
 
 const mapLoginStateToProps = (state) => {
   return {
-    isVisitor: state.isVisitor
+    loginState: state.loginState
   }
 }
 
 const mapLoginDispatchToProps = (dispatch) => {
   return {
-    changeVisite(type) {
+    changeLoginState(type) {
       dispatch({
-        type: 'visitorIn',
+        type: 'changeLoginState',
         payload: type
       })
     },
@@ -366,8 +366,12 @@ class Reset extends React.Component {
     let { username, password, confirmPassword, email, phone } = this.state
 
     if (password !== confirmPassword) {
-      return Modal.update({
-        text: '两次输入的密码不一致！'
+      const modal = Modal.warning()
+      return modal.update({
+        content: '两次密码不一致！',
+        onOk() {
+          modal.destroy()
+        }
       })
     }
 

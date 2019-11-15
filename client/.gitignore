@@ -11,6 +11,7 @@
 
 # production
 /build
+/myBlog
 
 # misc
 .DS_Store

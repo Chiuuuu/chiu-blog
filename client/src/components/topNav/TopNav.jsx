@@ -46,16 +46,16 @@ class TopNav extends React.Component {
     return (
       <div className="top-nav-box">
         <div className="top-nav-left">
-          {!!+this.props.isVisitor ? '欢迎参观' : this.props.userInfo.nickname + '的博客'}
+          { this.props.loginState == 0 ? '欢迎参观' : this.props.userInfo.nickname + '的博客'}
         </div>
         <div className="top-nav-center">
           { !!this.state.showSearch ? <Search className="top-nav-search" placeholder="搜索文章" size="default" onSearch={value => console.log(value)} /> : null }
         </div>
         <div className="top-nav-right">
-          { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/main')}><Icon type="home" />首页</Button> }
-          { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/add')}><Icon type="edit" />新建</Button> }
-          { !!+this.props.isVisitor ? null : <Button type="link" onClick={() =>this.switchNav('/user')}><Icon type="user" />个人</Button> }
-          <Button type="link" onClick={() =>this.switchNav('/sign')}><Icon type="logout" />退出</Button>
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/main')}><Icon type="home" />首页</Button> }
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/add')}><Icon type="edit" />新建</Button> }
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/user')}><Icon type="user" />个人</Button> }
+          <Button type="link" onClick={() => { this.switchNav('/sign'); this.props.changeLoginState(-1) }}><Icon type="logout" />退出</Button>
         </div>
       </div>
     )
@@ -66,11 +66,22 @@ TopNav = withRouter(TopNav)
 
 const mapStateToProps = (state) => {
   return {
-    isVisitor: state.isVisitor,
+    loginState: state.loginState,
     userInfo: state.userInfo
   }
 }
 
-TopNav = connect(mapStateToProps)(TopNav)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeLoginState(type) {
+      dispatch({
+        type: 'changeLoginState',
+        payload: type
+      })
+    }
+  }
+}
+
+TopNav = connect(mapStateToProps, mapDispatchToProps)(TopNav)
 
 export default TopNav

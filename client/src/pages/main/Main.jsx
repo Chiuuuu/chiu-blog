@@ -1,6 +1,8 @@
 import React from 'react'
 import './Main.css'
 
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 import ToTop from '../../components/toTop/ToTop'
 import TopNav from '../../components/topNav/TopNav'
 import SideInfo from './mainComponents/sideInfo/SideInfo'
@@ -88,10 +90,6 @@ class MainPage extends React.Component {
   showToTop = (e) => {
     const scrollTop = document.documentElement.scrollTop
     this.setState({ showToTop: scrollTop > 500 })
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    return state
   }
 
   componentDidMount() {

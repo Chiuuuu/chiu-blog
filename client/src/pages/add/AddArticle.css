@@ -1,0 +1,24 @@
+.add-article-box {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding-top: 70px;
+}
+
+.add-article-left,
+.add-article-right {
+  width: 50%;
+  height: calc(100% - 50px);
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.add-article-textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e5e6e7;
+  border-radius: 4px;
+  overflow-y: auto;
+}

@@ -20,7 +20,7 @@ class SideInfoUser extends React.Component {
     return (
       <div className="side-info-user">
         <Avatar className="side-info-avatar" size={160} icon="user" />
-        <div className="side-info-name">{!!+this.props.isVisitor ? '游客' : this.props.userInfo.nickname}</div>
+        <div className="side-info-name">{ this.props.loginState == 0 ? '游客' : this.props.userInfo.nickname}</div>
         <div className="side-info-data">
           <div>发布<span className="side-info-record">1</span></div>
           <div>阅读<span className="side-info-record">2</span></div>
@@ -32,7 +32,7 @@ class SideInfoUser extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    isVisitor: state.isVisitor,
+    loginState: state.loginState,
     userInfo: state.userInfo
   }
 }

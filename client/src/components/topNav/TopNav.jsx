@@ -52,9 +52,9 @@ class TopNav extends React.Component {
           { !!this.state.showSearch ? <Search className="top-nav-search" placeholder="搜索文章" size="default" onSearch={value => console.log(value)} /> : null }
         </div>
         <div className="top-nav-right">
-          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/main')}><Icon type="home" />首页</Button> }
-          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/add')}><Icon type="edit" />新建</Button> }
-          { this.props.loginState == 0 ? null : <Button type="link" onClick={() =>this.switchNav('/user')}><Icon type="user" />个人</Button> }
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() => this.switchNav('/main')}><Icon type="home" />首页</Button> }
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() => this.switchNav('/add')}><Icon type="edit" />新建</Button> }
+          { this.props.loginState == 0 ? null : <Button type="link" onClick={() => this.switchNav('/user')}><Icon type="user" />个人</Button> }
           <Button type="link" onClick={() => { this.switchNav('/sign'); this.props.changeLoginState(-1) }}><Icon type="logout" />退出</Button>
         </div>
       </div>

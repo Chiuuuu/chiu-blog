@@ -1,6 +1,12 @@
 .side-info-article {
+  height: calc(100% - 360px);
   margin-top: 30px;
   padding: 10px;
+}
+
+.side-info-article-list {
+  height: calc(100% - 44px);
+  overflow-y: auto;
 }
 
 .side-info-article-item {

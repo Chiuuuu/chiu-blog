@@ -4,7 +4,7 @@
   "description": "Hello Koa 2 example with async",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon --delay 2000ms app.js"
   },
   "dependencies": {
     "koa": "2.0.0",
@@ -12,6 +12,11 @@
     "koa-router": "^7.0.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "mongoose": "^5.7.5"
+    "mongoose": "^5.7.5",
+    "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "ignore": ["test/*", "docs/*"],
+    "delay": "2000"
   }
 }

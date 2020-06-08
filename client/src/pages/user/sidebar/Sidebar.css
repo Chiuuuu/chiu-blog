@@ -1,0 +1,40 @@
+.side-info-box {
+  position: fixed;
+  top: 80px;
+  left: 0;
+
+  overflow: hidden;
+  width: 320px;
+  height: calc(100% - 110px);
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
+  box-shadow: 5px 0 5px rgba(200,200,200,0.5);
+  /* border-right: 1px dotted #40a9ff; */
+}
+
+.sidebar-options {
+  color: inherit;
+}
+
+.sidebar-item {
+  margin: 0 30px 20px 30px;
+  text-align: center;
+}
+
+.sidebar-item.active {
+  background-color: #40a9ff;
+  color: #fff;
+}
+
+.sidebar-item button {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: inherit;
+}
+.sidebar-item.active .ant-btn-link:hover,
+.sidebar-item .ant-btn-link:focus {
+  color: #fff;
+}

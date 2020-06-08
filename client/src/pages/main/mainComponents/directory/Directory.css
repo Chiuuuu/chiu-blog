@@ -4,15 +4,22 @@
   justify-content: flex-start;
 
   position: fixed;
-  top: 50px;
+  top: 80px;
   right: 0;
 
   width: 340px;
-  height: calc(100% - 50px);
+  height: calc(100% - 110px);
   padding: 20px;
-  border-left: 1px dotted #40a9ff;
+  background-color: #fff;
+  box-shadow: -5px 0 5px rgba(200, 200, 200, 0.5);
+  /* border-left: 1px dotted #40a9ff; */
 }
 
 .directory-box .plice {
   margin-top: auto;
+}
+
+.directory-list {
+  height: calc(100% - 65px);
+  overflow-y: auto;
 }

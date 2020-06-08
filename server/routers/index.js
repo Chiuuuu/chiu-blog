@@ -35,9 +35,7 @@ router.post('/login', async(ctx, next) => {
           code: 1,
           msg: 'success',
           data: {
-            userInfo: {
-              nickname: user[0].nickname
-            }
+            userInfo: user[0]
           }
         };
       }else {

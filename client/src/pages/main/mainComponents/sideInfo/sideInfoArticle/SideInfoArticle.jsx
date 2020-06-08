@@ -28,11 +28,13 @@ class SideInfoArticle extends React.Component {
     return (
       <div className="side-info-article">
         <SubTitle text="最近发布" />
-        <MainContext.Consumer>
-          {itemList => itemList.map((item, index) => {
-            return <a className="side-info-article-item text-over" key={item.id}>{item.title}</a>
-          })}
-        </MainContext.Consumer>
+        <div className="side-info-article-list">
+          <MainContext.Consumer>
+            {itemList => itemList.map((item, index) => {
+              return <a className="side-info-article-item text-over" key={item.id}>{item.title}</a>
+            })}
+          </MainContext.Consumer>
+        </div>
       </div>
     )
   }

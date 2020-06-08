@@ -2,7 +2,7 @@ import React from 'react'
 import './Login.css'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router";
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import { Input, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 

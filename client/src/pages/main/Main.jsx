@@ -1,8 +1,8 @@
 import React from 'react'
 import './Main.css'
 
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+// import { withRouter } from 'react-router-dom'
+// import { connect } from 'react-redux'
 import ToTop from '../../components/toTop/ToTop'
 import TopNav from '../../components/topNav/TopNav'
 import SideInfo from './mainComponents/sideInfo/SideInfo'
@@ -82,7 +82,8 @@ class MainPage extends React.Component {
           createTime: 1572921746239
         }
       ],
-      showToTop: false
+      showToTop: false,
+      scrollTop: 0, // 中间部分滚动高度
     }
   
   }
@@ -99,14 +100,14 @@ class MainPage extends React.Component {
 
   render() {
     return (
-      <div className="main-page-box">
+      <div className="page-box">
         <TopNav showSearch={true} />
         {this.state.showToTop ? <ToTop /> : null}
-        <div className="main-page-body">
+        <div className="page-body">
           <MainContext.Provider value={this.state.contentItems}>
             <SideInfo />
-            <MainContent />
-            <Directory />
+            <MainContent scrollTop={this.state.scrollTop} />
+            <Directory scrollTo={scrollTop => this.setState({ scrollTop })} />
           </MainContext.Provider>
         </div>
       </div>

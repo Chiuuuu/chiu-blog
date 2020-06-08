@@ -411,7 +411,7 @@ class Reset extends React.Component {
   render() {
     let { emptyName, emptyPass, emptyConfirm, emptyEmail, emptyPhone } = this.state
     return (
-      <div className="register-window">
+      <div className="reset-window">
         <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
         <Input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入邮箱" type="text"/>
         <Input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入手机号" type="text"/>
@@ -479,7 +479,7 @@ class LoginPage extends React.Component {
               </div>
             : null
           }
-          <Redirect exact path="/sign" to="/sign/login" />
+          {/* <Redirect exact path="/sign" to="/sign/login" /> */}
           <Route exact path="/sign/login" render={ () => (<Login hideTab={this.hideTab} {...this.state} />) } />
           <Route exact path="/sign/register" render={ () => (<Register {...this.state} />) } />
           <Route exact path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />

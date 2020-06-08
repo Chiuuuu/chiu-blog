@@ -135,6 +135,11 @@
   height: 430px;
 }
 
-.register-window .sign-btn {
+.reset-window {
+  height: 390px;
+}
+
+.register-window .sign-btn,
+.reset-window .sign-btn {
   margin-top: 24px;
 }

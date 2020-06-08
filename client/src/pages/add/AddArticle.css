@@ -3,7 +3,7 @@
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  padding-top: 70px;
+  padding-top: 80px;
 }
 
 .add-article-left,
@@ -14,11 +14,42 @@
   padding-right: 30px;
 }
 
-.add-article-textarea {
+.add-article-textarea,
+.add-article-markdown {
   resize: none;
   width: 100%;
   height: 100%;
   border: 1px solid #e5e6e7;
   border-radius: 4px;
   overflow-y: auto;
+}
+.add-article-markdown {
+  padding: 20px;
+}
+
+/* 调整highlight样式 */
+.add-article-markdown h1,
+.add-article-markdown h2,
+.add-article-markdown h3,
+.add-article-markdown h4,
+.add-article-markdown h5,
+.add-article-markdown h6 {
+  font-weight: 700;
+}
+.add-article-right pre {
+  background-color: #000;
+  padding: 10px;
+  border-radius: 4px;
+}
+.add-article-right .language-jsx,
+.add-article-right .language-js {
+  color: #eee;
+}
+.add-article-right .hljs-keyword {
+  color: #24afe6;
+}
+.add-article-right .hljs-tag,
+.add-article-right .hljs-name,
+.add-article-right .hljs-attribute {
+  color: #f881b8;
 }

@@ -37,7 +37,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Switch>
-          <Redirect exact path="/" to="/sign" />
+          <Redirect exact path="/" to="/sign/login" />
           <Route path="/sign" component={LoginPage} />
           <Route path="/main" component={MainPage} />
           <Route path="/add" component={AddPage} />

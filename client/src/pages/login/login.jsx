@@ -1,9 +1,9 @@
 import React from 'react'
 import './Login.css'
 import { connect } from 'react-redux'
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import { Route, Link } from 'react-router-dom';
-import { Input, Modal, message } from 'antd';
+import { Form, Input, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 
 import { login, register, reset } from '../../request'
@@ -37,6 +37,10 @@ class Login extends React.Component {
     return {
       ...props
     }
+  }
+
+  componentDidMount() {
+    this.props.switchEnterFunction(this.loginToBlog.bind(this))
   }
 
   loginToBlog() {
@@ -173,6 +177,10 @@ class Register extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.props.switchEnterFunction(this.registerBlog.bind(this))
+  }
+
   // 根据传入的type值判断是哪个输入框的值
   changeInput(value, type) {
     value = value.trim()
@@ -275,15 +283,32 @@ class Register extends React.Component {
   render() {
     let { emptyName, emptyPass, emptyConfirm, emptyNickname, emptyEmail, emptyPhone } = this.state
     return (
-      <div className="register-window">
-        <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
-        <Input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 2)} placeholder="请输入密码" type="password"/>
-        <Input className={emptyConfirm ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 3)} placeholder="请确认密码" type="password"/>
-        <Input className={emptyNickname ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请确认昵称" type="text"/>
-        <Input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入邮箱" type="text"/>
-        <Input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 6)} placeholder="请输入手机号" type="text"/>
-        <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
-      </div>
+      <Form className="register-window">
+        <Form.Item name="" label="用户名">
+          <Input onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
+        </Form.Item>
+        <Form.Item name="" label="密码">
+          <Input onInput={({target}) => this.changeInput(target.value, 2)} placeholder="请输入密码" type="password"/>
+        </Form.Item>
+        <Form.Item name="" label="密码确认">
+          <Input onInput={({target}) => this.changeInput(target.value, 3)} placeholder="请确认密码" type="password"/>
+        </Form.Item>
+        <Form.Item name="" label="昵称">
+          <Input onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入昵称" type="text"/>
+        </Form.Item>
+        <Form.Item name="" label="性别">
+          <Input onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入昵称" type="text"/>
+        </Form.Item>
+        <Form.Item name="" label="邮箱">
+          <Input onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入邮箱" type="text"/>
+        </Form.Item>
+        <Form.Item name="" label="手机号">
+          <Input onInput={({target}) => this.changeInput(target.value, 6)} placeholder="请输入手机号" type="text"/>
+        </Form.Item>
+        <Form.Item>
+          <button className="sign-btn" onClick={() => this.registerBlog()}>注册</button>
+        </Form.Item>
+      </Form>
     )
   }
 }
@@ -314,6 +339,10 @@ class Reset extends React.Component {
     return {
       ...props
     }
+  }
+
+  componentDidMount() {
+    this.props.switchEnterFunction(this.reset.bind(this))
   }
 
   backwards() {
@@ -413,6 +442,7 @@ class Reset extends React.Component {
     return (
       <div className="reset-window">
         <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
+        <Input className={emptyName ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 1)} placeholder="请输入用户名" type="text"/>
         <Input className={emptyEmail ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 4)} placeholder="请输入邮箱" type="text"/>
         <Input className={emptyPhone ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 5)} placeholder="请输入手机号" type="text"/>
         <Input className={emptyPass ? 'alert' : ''} onInput={({target}) => this.changeInput(target.value, 2)} placeholder="请输入新密码" type="password"/>
@@ -437,10 +467,16 @@ class LoginPage extends React.Component {
       salt: '',
       isLogin: true,
       showTab: true,
+      pressEnter: () => {},
       switchLogin: (state) => {
         this.setState({
           isLogin: !!state,
           showTab: true
+        })
+      },
+      switchEnterFunction: fn => {
+        this.setState({
+          pressEnter: fn
         })
       }
     }
@@ -465,27 +501,44 @@ class LoginPage extends React.Component {
     })
   }
 
+  enterEventFunction = e => {
+    if (e.keyCode === 13) {
+      console.log(this.state.pressEnter)
+      this.state.pressEnter()
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('keyup', this.enterEventFunction)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keyup', this.enterEventFunction)
+  }
+
   render() {
     let isLogin = this.state.isLogin
 
     return (
-      <div className="sign-bg">
-        <div className="sign-window">
-          {
-            this.state.showTab 
-            ? <div className="sign-switch">
-                <Link onClick={() => this.state.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
-                <Link onClick={() => this.state.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
-              </div>
-            : null
-          }
-          {/* <Redirect exact path="/sign" to="/sign/login" /> */}
-          <Route exact path="/sign/login" render={ () => (<Login hideTab={this.hideTab} {...this.state} />) } />
-          <Route exact path="/sign/register" render={ () => (<Register {...this.state} />) } />
-          <Route exact path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />
+      <React.Fragment>
+        <div className="sign-bg">
+          <div className="sign-window">
+            {
+              this.state.showTab 
+              ? <div className="sign-switch">
+                  <Link onClick={() => this.state.switchLogin(1)} className={isLogin ? 'active' : ''} to="/sign/login">账号登录</Link>
+                  <Link onClick={() => this.state.switchLogin(0)} className={!isLogin ? 'active' : ''} to="/sign/register">快速注册</Link>
+                </div>
+              : null
+            }
+            <Redirect exact path="/sign" to="/sign/login" />
+            <Route exact path="/sign/login" render={ () => (<Login hideTab={this.hideTab} {...this.state} />) } />
+            <Route exact path="/sign/register" render={ () => (<Register {...this.state} />) } />
+            <Route exact path="/sign/reset" render={ () => (<Reset backwards={this.backwards} {...this.state} />) } />
+          </div>
         </div>
         <div className="plice">京ICP备19108748号-1</div>
-      </div>
+      </React.Fragment>
     )
   }
 }

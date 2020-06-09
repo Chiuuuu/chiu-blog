@@ -9,6 +9,7 @@ db.on('open', function() {
     username: String, 
     password: String,
     nickname: String,
+    gender: Number,
     email: String,
     phone: String,
   });
@@ -35,7 +36,12 @@ router.post('/login', async(ctx, next) => {
           code: 1,
           msg: 'success',
           data: {
-            userInfo: user[0]
+            id: user[0]._id,
+            email: user[0].email,
+            nickname: user[0].nickname,
+            phone: user[0].phone,
+            gender: user[0].gender,
+            username: user[0].username
           }
         };
       }else {
@@ -91,7 +97,7 @@ router.post('/register', async(ctx, next) => {
     ctx.response.status = 500
     return next()
   }
-  ctx.response.body = { code: 1, msg: 'success', data: doc }
+  ctx.response.body = { code: 1, msg: 'success' }
 })
 
 // 重置密码接口
@@ -105,7 +111,7 @@ router.post('/reset', async(ctx, next) => {
   try {
     users = await User.findOneAndUpdate({ username, email, phone }, { password })
     if (!!users) {
-      ctx.response.body = { code: 1, msg: 'success', data: users }
+      ctx.response.body = { code: 1, msg: 'success' }
     }else {
       ctx.response.body = { code: 0, msg: '手机及邮箱验证失败', data: {} }
     }

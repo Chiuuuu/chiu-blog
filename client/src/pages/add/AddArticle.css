@@ -1,16 +1,38 @@
 .add-article-box {
-  display: flex;
-  justify-content: space-between;
   width: 100%;
   height: 100%;
   padding-top: 80px;
 }
 
+.add-article-title {
+  height: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.add-article-title input {
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.add-article-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(100% - 110px);
+  margin-top: 30px;
+}
+
 .add-article-left,
 .add-article-right {
-  width: 50%;
-  height: calc(100% - 50px);
+  width: calc(50% - 15px);
+  height: 100%;
+}
+.add-article-left {
   padding-left: 30px;
+}
+.add-article-right {
   padding-right: 30px;
 }
 
@@ -18,13 +40,13 @@
 .add-article-markdown {
   resize: none;
   width: 100%;
-  height: 100%;
+  height: 100% !important;
+  min-height: unset;
   border: 1px solid #e5e6e7;
   border-radius: 4px;
   overflow-y: auto;
-}
-.add-article-markdown {
-  padding: 20px;
+  font-size: 20px;
+  padding: 4px 11px;
 }
 
 /* 调整highlight样式 */

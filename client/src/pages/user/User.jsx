@@ -27,6 +27,23 @@ class User extends React.Component {
   
   }
 
+  static getDerivedStateFromProps(nextProps, preState) {
+    const pathname = nextProps.history.location.pathname
+    let active = 0
+    if (pathname.indexOf('info') > -1) {
+      active = 0
+    } else if (pathname.indexOf('setting') > -1) {
+      active = 1
+    } else if (pathname.indexOf('message') > -1) {
+      active = 2
+    } else {
+      nextProps.history.push('/user/info')
+    }
+    return {
+      active
+    }
+  }
+
   changeRoute = (active = 0) => {
     if (active === 0) {
       this.props.history.push('/user/info')
@@ -37,16 +54,12 @@ class User extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.changeRoute()
-  }
-
   render() {
     return (
       <div className="page-box">
         <TopNav />
         <div className="page-body">
-          <Sidebar changeActive={active => this.changeRoute(active)} />
+          <Sidebar active={this.state.active} changeActive={active => this.changeRoute(active)} />
           <div className="user-content">
             <Switch>
               <Route path="/user/info" component={Info} />

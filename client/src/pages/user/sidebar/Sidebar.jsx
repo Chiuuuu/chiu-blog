@@ -11,16 +11,9 @@ class Sidebar extends React.Component {
     super(props)
   
     this.state = {
-      active: 0
+      
     }
   
-  }
-
-  changeActive = active => {
-    this.props.changeActive(active)
-    this.setState({
-      active
-    })
   }
 
   render() {
@@ -34,20 +27,20 @@ class Sidebar extends React.Component {
 
         {/* 选项 */}
         <div className="sidebar-options">
-          <div className={'sidebar-item' + (this.state.active === 0 ? ' active' : '')}>
-            <Button type="link" onClick={() => this.changeActive(0)}>
+          <div className={'sidebar-item' + (this.props.active === 0 ? ' active' : '')}>
+            <Button type="link" onClick={() => this.props.changeActive(0)}>
               <UserOutlined />
               <span>个人信息</span>
             </Button>
           </div>
-          <div className={'sidebar-item' + (this.state.active === 1 ? ' active' : '')}>
-            <Button type="link" onClick={() => this.changeActive(1)}>
+          <div className={'sidebar-item' + (this.props.active === 1 ? ' active' : '')}>
+            <Button type="link" onClick={() => this.props.changeActive(1)}>
               <SettingOutlined />
               <span>账号设置</span>
             </Button>
           </div>
-          <div className={'sidebar-item' + (this.state.active === 2 ? ' active' : '')}>
-            <Button type="link" onClick={() => this.changeActive(2)}>
+          <div className={'sidebar-item' + (this.props.active === 2 ? ' active' : '')}>
+            <Button type="link" onClick={() => this.props.changeActive(2)}>
               <MessageOutlined />
               <span>消息提醒</span>
             </Button>

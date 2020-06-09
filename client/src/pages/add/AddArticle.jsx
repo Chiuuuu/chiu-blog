@@ -7,6 +7,8 @@ import 'highlight.js/styles/github.css';
 import { debounce } from '../../tools'
 import marked from 'marked'
 import TopNav from '../../components/topNav/TopNav'
+import { Input } from 'antd';
+const { TextArea  } = Input
 
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -46,11 +48,16 @@ class AddPage extends React.Component {
     return (
       <div className="add-article-box">
         <TopNav />
-        <div className="add-article-left">
-          <textarea className="add-article-textarea" onInput={ this.getText }></textarea>
+        <div className="add-article-title">
+          <Input placeholder="请输入标题" />
         </div>
-        <div className="add-article-right">
-          <div className="add-article-markdown" ref={(textarea) => this.markedText = textarea}></div>
+        <div className="add-article-content">
+          <div className="add-article-left">
+            <TextArea className="add-article-textarea" onInput={ this.getText }></TextArea>
+          </div>
+          <div className="add-article-right">
+            <div className="add-article-markdown" ref={(textarea) => this.markedText = textarea}></div>
+          </div>
         </div>
       </div>
     )

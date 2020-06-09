@@ -20,7 +20,7 @@ code {
 
 /*修改滚动条样式*/
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
   height: 10px;
   /**/
 }

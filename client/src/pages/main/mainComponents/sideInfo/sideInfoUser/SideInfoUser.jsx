@@ -2,6 +2,8 @@ import React from 'react'
 import './SideInfoUser.css'
 import { connect } from 'react-redux'
 
+import { UserOutlined } from '@ant-design/icons';
+
 import { Avatar } from 'antd';
 
 class SideInfoUser extends React.Component {
@@ -19,7 +21,7 @@ class SideInfoUser extends React.Component {
   render() {
     return (
       <div className="side-info-user">
-        <Avatar className="side-info-avatar" size={160} icon="user" />
+        <Avatar className="side-info-avatar" size={160} icon={<UserOutlined />} />
         <div className="side-info-name">{ this.props.loginState == 0 ? '游客' : this.props.userInfo.nickname}</div>
         <div className="side-info-data">
           <div>发布<span className="side-info-record">1</span></div>
@@ -27,7 +29,7 @@ class SideInfoUser extends React.Component {
           <div>点赞<span className="side-info-record">3</span></div>
         </div>
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {

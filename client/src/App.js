@@ -3,7 +3,7 @@ import './App.css'
 
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import LoginPage from './pages/login/Login'
+import LoginPage from './pages/login/'
 import MainPage from './pages/main/Main'
 import AddPage from './pages/add/AddArticle';
 import UserPage from './pages/user/User';

@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
       <div className="side-info-box">
         {/* 头像 */}
         <div className="side-info-user">
-          <Avatar className="side-info-avatar" size={160} icon="user" />
+          <Avatar className="side-info-avatar" size={160} icon={<UserOutlined />} />
           <div className="side-info-name">{ this.props.userInfo.nickname }</div>
         </div>
 
@@ -47,7 +47,7 @@ class Sidebar extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

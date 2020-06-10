@@ -1,7 +1,7 @@
 import React from 'react'
 import './MainContent.css'
 
-import { Icon } from 'antd'
+import { LikeFilled, PushpinFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 
 class MainContentItem extends React.Component {
@@ -43,7 +43,7 @@ class MainContentItem extends React.Component {
     return (
       <div id={'item_' + this.props.id} className="main-content-item">
         <div className="main-content-item-title cursor-underline">
-          <Icon style={{color: '#fcacb9', marginRight: '10px'}} type="pushpin" theme="filled" />{this.props.title}
+          <PushpinFilled style={{color: '#fcacb9', marginRight: '10px'}} />{this.props.title}
         </div>
         <div className="main-content-item-content cursor-underline text-over">
           {this.props.content}
@@ -56,13 +56,13 @@ class MainContentItem extends React.Component {
             评论 <span className="cursor-underline">( {this.state.comment.length} )</span>
             </div>
           <div className="item-read">
-            <Icon style={{color: '#fcacb9', cursor: 'pointer', marginRight: '4px'}} type="like" theme="filled" /> 
+            <LikeFilled style={{color: '#fcacb9', cursor: 'pointer', marginRight: '4px'}} /> 
             ( {this.state.like} )
             </div>
           <div className="item-read">{this.state.createTime}</div>
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import './MainContent.css'
 
-import { Icon } from 'antd'
+import { ReadFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types'
 
 import MainContext from '../../mainContext'
@@ -44,14 +44,14 @@ class MainContent extends React.Component {
   render() {
     return (
       <div ref={this.mainContent} className="main-content">
-        <div className="main-content-title"><Icon style={{color: '#fcacb9', marginRight: '10px'}} type="read" theme="filled" />全部文章</div>
+        <div className="main-content-title"><ReadFilled style={{color: '#fcacb9', marginRight: '10px'}} />全部文章</div>
         <MainContext.Consumer>
           {itemList => itemList.map(item => {
             return <MainContentItem {...item} key={item.id} />
           })}
         </MainContext.Consumer>
       </div>
-    )
+    );
   }
 }
 

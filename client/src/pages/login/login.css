@@ -31,15 +31,19 @@
 
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
+  top: 10%;
+  transform: translateX(-50%);
 }
 
 .sign-switch {
+  display: flex;
   height: 50px;
   line-height: 50px;
-
-  display: flex;
+  margin-bottom: 20px;
+}
+.sign-window .ant-form-horizontal .ant-form-item-label > label {
+  width: 80px;
+  color: #40a9ff;
 }
 .sign-switch a {
   display: block;
@@ -54,15 +58,8 @@
 }
 
 .sign-bg input {
-  display: block;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 100%;
-  height: 40px;
-  font-size: 16px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 24px;
   padding-left: 5px;
   position: relative;
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import './ToTop.css'
 
-import { Icon } from 'antd'
+import { UpOutlined } from '@ant-design/icons';
 
 class ToTop extends React.Component {
   constructor(props) {
@@ -16,9 +16,9 @@ class ToTop extends React.Component {
   render() {
     return (
       <div id="toTop" title="返回顶部" onClick={() => window.scrollTo({ top:0, behavior: 'smooth' })}>
-        <Icon type="up" />
+        <UpOutlined />
       </div>
-    )
+    );
   }
 }
 

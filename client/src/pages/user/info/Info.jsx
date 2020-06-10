@@ -18,7 +18,7 @@ class Info extends React.Component {
     return (
       <Descriptions className="user-info-box" title="基本信息" column={2}>
         <Descriptions.Item label="昵称">{this.props.nickname}</Descriptions.Item>
-        <Descriptions.Item label="性别">{this.props.sex}</Descriptions.Item>
+        <Descriptions.Item label="性别">{this.props.gender}</Descriptions.Item>
         <Descriptions.Item label="手机号">{this.props.phone}</Descriptions.Item>
         <Descriptions.Item label="邮箱">{this.props.email}</Descriptions.Item>
       </Descriptions>
@@ -27,15 +27,17 @@ class Info extends React.Component {
 }
 
 const mapState = (state) => {
-  let sex = '未知'
-  if (state.userInfo.sex == 1) {
-    sex = '男'
-  } else if (state.userInfo.sex == 2) {
-    sex = '女'
+  let gender = '保密'
+  if (state.userInfo.gender == 1) {
+    gender = '男'
+  } else if (state.userInfo.gender == 0) {
+    gender = '女'
+  } else if (state.userInfo.gender == 2) {
+    gender = '保密'
   }
   return {
     nickname: state.userInfo.nickname,
-    sex: sex,
+    gender: gender,
     email: state.userInfo.email,
     phone: state.userInfo.phone
   }

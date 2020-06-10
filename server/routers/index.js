@@ -66,7 +66,7 @@ router.post('/login', async(ctx, next) => {
 // 注册接口
 router.post('/register', async(ctx, next) => {
   let body = ctx.request.body
-  let { username, password, nickname, email, phone } = body
+  let { username, password, gender, nickname, email, phone } = body
   ctx.response.type = 'application/json'
 
   // 搜索数据库是否已经有该用户名
@@ -91,7 +91,7 @@ router.post('/register', async(ctx, next) => {
   // 注册新用户
   let doc = null
   try {
-    doc = await User.create({ username, password, nickname, email, phone })
+    doc = await User.create({ username, password, gender, nickname, email, phone })
   } catch (error) {
     console.log(error)
     ctx.response.status = 500
@@ -103,17 +103,17 @@ router.post('/register', async(ctx, next) => {
 // 重置密码接口
 router.post('/reset', async(ctx, next) => {
   let body = ctx.request.body
-  let { username, password, email, phone } = body
+  let { username, password, phone } = body
   ctx.response.type = 'application/json'
 
   // 搜索数据库是否已经有该用户名
   let users = null
   try {
-    users = await User.findOneAndUpdate({ username, email, phone }, { password })
+    users = await User.findOneAndUpdate({ username, phone }, { password })
     if (!!users) {
       ctx.response.body = { code: 1, msg: 'success' }
     }else {
-      ctx.response.body = { code: 0, msg: '手机及邮箱验证失败', data: {} }
+      ctx.response.body = { code: 0, msg: '手机验证失败', data: {} }
     }
   } catch (error) {
     console.log(error)

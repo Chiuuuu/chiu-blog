@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { Form, Input, Radio, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 
-import { reset } from '../../request'
+import { reset } from '../../request/user'
 import MD5 from 'js-md5'
 
 class Reset extends React.Component {
@@ -62,7 +62,6 @@ class Reset extends React.Component {
         if (res.code == 1) {
           message.success('找回密码成功！')
           this.backwards()
-          window.localStorage.setItem('user', JSON.stringify({ username: params.username, password: params.password }))
         }else if (res.code == 0) {
           Modal.warning({
             content: res.msg
@@ -97,8 +96,22 @@ class Reset extends React.Component {
           label="新密码" 
           rules={[
             { required: true, message: '请输入新密码' },
-            { min: 8, message: '密码长度不能少于8位' },
-            ]}>
+            ({ getFieldValue, setFields }) => ({
+              validator(rule, value) {
+                if (value.length < 8) {
+                  return Promise.reject('密码长度不能少于8位')
+                } else {
+                  if (getFieldValue('confirmPassword') === value) {
+                    setFields([{ name: 'confirmPassword', errors: '' }])
+                    return Promise.resolve()
+                  } else {
+                    setFields([{ name: 'confirmPassword', errors: ['2次输入的密码不一致'] }])
+                    return Promise.resolve()
+                  }
+                }
+              },
+            })
+          ]}>
           <Input autoComplete="off" placeholder="请输入新密码" type="password"/>
         </Form.Item>
         <Form.Item 

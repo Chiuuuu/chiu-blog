@@ -1,35 +1,37 @@
 import React from 'react'
 import './Message.css'
-import { Collapse, Badge } from 'antd';
+import { Collapse, Badge, message } from 'antd';
+import { connect } from 'react-redux'
+import { getMessageList, updateMessageCheck } from '../../../request/message'
 
-const { Panel } = Collapse;
 class Message extends React.Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      messageList: [
-        {
-          id: 1,
-          title: '消息1',
-          isCheck: false,
-          text: '我是消息111111111111'
-        },
-        {
-          id: 2,
-          title: '消息2',
-          isCheck: false,
-          text: '我是消息222222222222'
-        },
-        {
-          id: 3,
-          title: '消息3',
-          isCheck: false,
-          text: '我是消息333333333333'
-        },
-      ]
+      messageList: []
     }
   
+  }
+
+  componentDidMount() {
+    getMessageList(this.props.userId)
+      .then(res => {
+        console.log(res)
+        if (res.code == 0) {
+          this.setState({
+            messageList: res.data.sort((a, b) => {
+              return (+new Date(b.createTime)) - (+new Date(a.createTime))
+            })
+          })
+        } else {
+          message.error(res.msg)
+        }
+      })
+      .catch(err => {
+        console.log('获取消息出错', err)
+        message.error('获取消息出错, 请刷新重试')
+      })
   }
 
   // 用手风琴模式, index值唯一, 否则返回的数组难以遍历(且数据重复率高)
@@ -38,7 +40,7 @@ class Message extends React.Component {
     if (messageList[index] && !messageList[index].isCheck) {
       messageList[index].isCheck = true
       // 修改isCheck的状态
-      // api(messageList[index].id)
+      updateMessageCheck(messageList[index]._id)
     }
     this.setState({
       messageList
@@ -46,13 +48,17 @@ class Message extends React.Component {
   }
 
   render() {
+    const { Panel } = Collapse;
     const messageList = this.state.messageList
+    if (messageList.length < 1) return (
+      <div>暂无消息</div>
+    )
     return (
       <Collapse accordion onChange={(key) => this.clickMessage(key)}>
         {
           messageList.map((item, index) => {
             return <Panel header={<Badge dot={!item.isCheck}>{item.title}</Badge>} key={index} onClick={() => this.clickMessage()}>
-              <p>{item.text}</p>
+              <p>{item.content}</p>
             </Panel>
           })
         }
@@ -60,5 +66,12 @@ class Message extends React.Component {
     )
   }
 }
+
+const mapState = state => {
+  return {
+    userId: state.userId
+  }
+}
+Message = connect(mapState)(Message)
 
 export default Message

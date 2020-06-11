@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import { Form, Input, Radio, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 
-import { register } from '../../request'
+import { register } from '../../request/user'
 import MD5 from 'js-md5'
 
 class Register extends React.Component {
@@ -53,7 +53,6 @@ class Register extends React.Component {
     })
       .then(res => {
         if (res.code == 1) {
-          window.localStorage.setItem('user', res)
           this.props.switchLogin(1)
           this.props.history.push('/sign/login')
           message.success('注册成功！')
@@ -85,8 +84,22 @@ class Register extends React.Component {
           label="密码" 
           rules={[
             { required: true, message: '请输入密码' },
-            { min: 8, message: '密码长度不能少于8位' },
-            ]}>
+            ({ getFieldValue, setFields }) => ({
+              validator(rule, value) {
+                if (value.length < 8) {
+                  return Promise.reject('密码长度不能少于8位')
+                } else {
+                  if (getFieldValue('confirmPassword') === value) {
+                    setFields([{ name: 'confirmPassword', errors: '' }])
+                    return Promise.resolve()
+                  } else {
+                    setFields([{ name: 'confirmPassword', errors: ['2次输入的密码不一致'] }])
+                    return Promise.resolve()
+                  }
+                }
+              },
+            })
+          ]}>
           <Input autoComplete="off" placeholder="请输入密码" type="password"/>
         </Form.Item>
         <Form.Item 

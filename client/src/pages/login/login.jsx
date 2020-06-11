@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Form, Input, Modal, message } from 'antd';
 import PropTypes from 'prop-types';
 
-import { login } from '../../request'
+import { login } from '../../request/user'
 import MD5 from 'js-md5'
 
 class Login extends React.Component {
@@ -64,9 +64,9 @@ class Login extends React.Component {
           })
         }else if (res.code == 1) {    // 成功登陆, 储存用户信息
           message.success('欢迎')
-          window.localStorage.setItem('user', JSON.stringify(params))
           this.props.changeLoginState(1)
-          this.props.getUserInfo(JSON.stringify(res.data))
+          this.props.getUserInfo(res.data.userInfo)
+          this.props.getUserId(res.data.userInfo.id)
           this.props.history.push('/main')
         }else if (res.code == 2) {   // 密码错误
           const modal = Modal.warning()
@@ -144,6 +144,12 @@ const mapLoginDispatchToProps = (dispatch) => {
       dispatch({
         type: 'getUserInfo',
         payload: data
+      })
+    },
+    getUserId(id) {
+      dispatch({
+        type: 'getUserId',
+        payload: id
       })
     }
   }

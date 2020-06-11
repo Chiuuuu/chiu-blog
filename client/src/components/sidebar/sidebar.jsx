@@ -1,7 +1,7 @@
 import React from 'react'
 import './sidebar.css'
 
-import { getUserInfo } from '../../request'
+import { getUserInfo } from '../../request/user'
 
 class Sidebar extends React.Component {
   constructor(props) {

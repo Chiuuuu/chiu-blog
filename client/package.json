@@ -9,6 +9,7 @@
     "axios": "^0.19.0",
     "highlight.js": "^9.16.2",
     "js-md5": "^0.7.3",
+    "jwt-simple": "^0.5.6",
     "marked": "^0.7.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",

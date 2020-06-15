@@ -68,9 +68,9 @@ router.post('/login', async(ctx, next) => {
               username: user[0].username
             },
             tokenInfo: jwt.encode({
-              username: user.username,
-              phone: user.phone,
-              // tkoen设置一天过期
+              username: user[0].username,
+              phone: user[0].phone,
+              // token设置一天过期
               express: +new Date() + 24 * 60 * 60 * 1000
             }, secret)
           }

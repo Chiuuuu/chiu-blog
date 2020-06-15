@@ -64,6 +64,7 @@ class Login extends React.Component {
           })
         }else if (res.code == 1) {    // 成功登陆, 储存用户信息
           message.success('欢迎')
+          window.localStorage.setItem('tokenInfo', res.data.tokenInfo)
           this.props.changeLoginState(1)
           this.props.getUserInfo(res.data.userInfo)
           this.props.getUserId(res.data.userInfo.id)
